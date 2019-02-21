@@ -1,0 +1,496 @@
+/**
+ * @file
+ * Page Styling
+ *
+ * Style the markup found in page.tpl.php. Also includes some styling of
+ * miscellaneous Drupal elements that appear in the $content variable, such as
+ * ul.links, .pager, .more-link, etc.
+ */
+
+
+/*
+ * Body
+ */
+body {
+  margin: 0;
+  padding: 0;
+  background: url(../images/power-transformers.jpg) center top no-repeat #EEE;
+  color: #444;
+}
+h2 {
+color: #437C00;
+margin: 1em 0 .5em;
+}
+p {
+margin: .5em 0 1em;	
+}
+th,td {
+padding: 6px 10px;	
+border: 1px solid #CCC;
+}
+#page-wrapper {
+width: 100%;
+float: left;
+background: url(../images/bg-texture.png) 0 0 repeat transparent;
+}
+#skip-to-nav, #page {
+font-size: .8em;	
+}
+#page {
+width: 1000px;
+margin: 0 auto;
+}
+#page a {
+color: #660000;	
+text-decoration: none;
+border-bottom: 1px dotted #660000;
+}
+/*
+ * The skip-link link will be completely hidden until a user tabs to the link.
+ * See the element-focusable rule in system.base.css.
+ */
+#skip-link a,
+#skip-link a:visited {
+  display: block;
+  width: 100%;
+  padding: 2px 0 3px 0;
+  text-align: center;
+  background-color: #666;
+  color: #fff;
+}
+
+/*
+ * Header
+ */
+#header {
+/*width: 100%;
+float: left;
+margin: 20px 0 25px;*/
+margin-top:-40px;
+}
+
+#header .section {
+}
+
+#navigation {
+float:none;
+width: 50%;
+margin: 0;
+background-color: rgba(191, 30, 45, 0.8);
+height: 58px;
+position:relative;
+left:500px;
+top:58px;
+z-index:100;
+text-transform:uppercase;
+}
+
+#navigation a {
+text-decoration: none;	
+/*color: #f6870e;*/
+color: #FFF;
+border-bottom: none;
+padding-bottom: 1px;
+}
+#navigation a.active-trail {
+font-weight: bold;	
+}
+#logo-container {
+width: 40%;
+float: left;
+padding: 1%;
+background-color: rgba(255,255,255,0.7);	
+}
+#logo-container a {
+border: none;	
+}
+
+#logo /* Wrapping link for logo */ {
+  float: left; /* LTR */
+  margin: 0;
+  padding: 0;
+}
+
+#logo img {
+  vertical-align: bottom;
+}
+
+#name-and-slogan /* Wrapper for website name and slogan */ {
+  float: left;
+}
+
+h1#site-name,
+div#site-name /* The name of the website */ {
+  margin: 0;
+  font-size: 2em;
+  line-height: 1.5em;
+}
+
+#site-name a:link,
+#site-name a:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+#site-name a:hover,
+#site-name a:focus {
+  text-decoration: underline;
+}
+
+#site-slogan /* The slogan (or tagline) of a website */ {
+}
+
+.region-header /* Wrapper for any blocks placed in the header region */ {
+  clear: both; /* Clear the logo */
+  background: url(../images/border.gif) 0 60px repeat-x transparent;
+  padding-bottom: 6px;
+}
+
+/*
+ * Main (container for everything else)
+ */
+#main-wrapper {
+width: 100%;
+float: left;
+}
+
+#main {
+}
+
+/*
+ * Content
+ */
+#content {
+}
+
+#content .section {
+}
+
+.region-highlighted {
+}
+
+.breadcrumb /* The path to the current page in the form of a list of links */ {
+  padding-bottom: 0; /* Undo system.css */
+  background-color: rgba(255,255,255,0.8);
+}
+
+h1.title, /* The title of the page */
+h2.node-title, /* Title of a piece of content when it is given in a list of content */
+h2.block-title, /* Block title */
+h2.title, /* Comment section heading */
+h2.comment-form, /* Comment form heading */
+h3.title /* Comment title */ {
+  margin: 0;
+}
+h2.block-title {
+margin: 0 0 .5em 20px;	
+font-size: 110%;
+color: #f6870e;
+}
+h1#page-title {
+background-color: rgba(255,255,255,0.8);
+width: 95%;
+float: left;	
+padding: 2px 0 2px 3%;
+margin: 136px 0 0 2%;
+/*color: #437C00;*/
+color: #990033;
+text-transform: uppercase;
+display:none;
+}
+tr.even /* Some tables have rows marked even or odd. */ {
+  /* background-color: #eee; */ /* Drupal core uses a #eee background */
+}
+
+tr.odd {
+  /* background-color: #eee; */ /* Drupal core uses a #eee background */
+}
+
+div.messages /* Important messages (status, warning, and error) for the user. See also the declarations in messages.css. */ {
+  margin: 1.5em 0; /* Drupal core uses "6px 0" margin */
+}
+
+div.messages ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+div.status /* Normal priority messages */ {
+}
+
+div.warning,
+tr.warning /* Medium priority messages */ {
+  /* border: 1px solid #f0c020; */ /* Drupal core uses: 1px solid #f0c020 */
+}
+
+div.error,
+tr.error /* High priority messages. See also the .error declaration below. */ {
+}
+
+.error /* Errors that are separate from div.messages status messages. */ {
+  /* color: #e55; */ /* Drupal core uses a #e55 background */
+}
+
+.warning /* Warnings that are separate from div.messages status messages. */ {
+  /* color: #e09010; */ /* Drupal core uses a #e09010 background */
+}
+
+div.tabs /* See also the tabs.css file. */ {
+	width: 100%;
+	float: left;
+}
+
+.region-help /* Help text on a page */ {
+}
+
+.more-help-link /* Link to more help */ {
+}
+
+.region-content /* Wrapper for the actual page content */ {
+	background-color: rgba(255,255,255,0.8);
+	width: 100%;
+	float: left;
+	padding-bottom: 30px;
+	padding-top: 16px;
+}
+#block-system-main {
+width: 90%;
+margin: 12px 0 0 5%;	
+}
+ul.links /* List of links */ {
+}
+
+ul.links.inline {
+  display: block; /* Let the links be inline, but the container be a block. */
+}
+
+ul.links li {
+  padding: 0 1em 0 0; /* LTR */
+}
+
+.item-list .pager /* A list of page numbers when more than 1 page of content is available */ {
+  padding: 0;
+}
+
+.item-list .pager li /* Each page number in the pager list */ {
+  padding: 0 0.5em;
+}
+
+.feed-icon /* The link to the RSS or Atom feed for the current list of content */ {
+}
+
+.more-link /* Aggregator, blog, and forum more link */ {
+}
+
+/*
+ * First sidebar (on left in LTR languages, on right in RTL)
+ *
+ * Remember to NOT add padding or margin to your .region-sidebar-first
+ * (see the layout.css file.)
+ */
+.region-sidebar-first {
+}
+
+.region-sidebar-first .section {
+}
+
+/*
+ * Second sidebar (on right in LTR languages, on left in RTL)
+ *
+ * Remember to NOT add padding or margin to your .region-sidebar-second
+ * (see the layout.css file.)
+ */
+ .with-navigation .region-sidebar-second {
+margin: 0 0 30px 3%;
+}
+.region-sidebar-second {
+width: 30%;
+float: left;
+}
+.region-sidebar-second p {
+font-size: 90%;
+line-height: 1.5em;	
+}
+.region-sidebar-second .section {
+margin: 0;
+}
+
+/*
+ * Footer
+ */
+.region-footer {
+width: 100%;
+float: left;
+font-size: 75%;
+}
+
+/*
+ * Page bottom
+ */
+.region-bottom /* Wrapper for any blocks placed in the page bottom region */ {
+}
+#block-block-1 {
+width: 1000px;
+margin: 0 auto;	
+text-align: center;
+font-size: 90%;
+}
+#block-block-1 p {
+margin: 0;
+padding: 14px 0;	
+}
+#block-block-1 span {
+font-weight: bold;	
+}
+#block-block-1 a {
+color: #660000;	
+}
+#navigation ul#main-menu {
+margin: 10px 0 0 21px;	
+padding: 20px 0;
+}
+#navigation ul#main-menu li {
+margin-right: 10px;	
+/*border-right: 1px solid #CCC;*/
+}
+#navigation ul#main-menu li.last {
+border-right: none;	
+}
+#content, .no-sidebars #content {
+width: 100%;
+margin: 0;	
+}
+.field-name-field-contact-tds .field-items {
+margin-top: 6px;	
+}
+.field-name-field-contact-tds .views-row {
+margin-bottom: 13px;	
+}
+#block-asu-brand-asu-brand-footer {
+margin-bottom: 0;	
+}
+p,li{
+margin: 0 0 .75em;	
+}
+h2,h3,h4,h5 {
+margin: 1.25em 0 .5em;	
+}
+#title-container {
+width: 100%;
+float: left;
+height: 200px;	
+margin-bottom: 20px;
+background: url(../images/banner-city.jpg) 0 0 no-repeat transparent;
+position:relative;
+z-index:0;
+}
+.section-center #title-container {
+background: url(../images/banner-city.jpg) 0 0 no-repeat transparent;	
+}
+.section-services #title-container {
+background: url(../images/banner-pipes.jpg) 0 0 no-repeat transparent;	
+}
+.node-type-home-page #title-container {
+background: url(../images/banner-solar.jpg) 0 0 no-repeat transparent;
+}
+.section-contact #title-container {
+background: url(../images/banner-circuit.jpg) 0 0 no-repeat transparent;	
+}
+
+.sidebar-second #content {
+margin: 0;	
+width: 67%;
+} 
+.region-sidebar-second .block {
+width: 100%;
+float: left;
+background-color: rgba(255,255,255,0.8);	
+padding: 17px 0 14px;
+}
+.region-sidebar-second .block .content {
+margin-left: 6.8%;
+width: 86.4%;	
+}
+.region-sidebar-second h3 {
+margin-top: 0;	
+font-size: 105%;
+color: #f6870e;
+}
+#block-views-announcements-block .views-field-title {
+font-weight: bold;	
+color: #777;
+}
+#block-views-announcements-block .views-row {
+margin-bottom: 12px;
+}
+#grand-opening {
+background: url(../images/grand-opening-bg.jpg) 0 0 no-repeat transparent;		
+width: 600px;
+height: 138px;
+margin-bottom: 20px;
+float: left;
+}
+#grand-opening h2 {
+background-color: rgba(255,255,255,0.8);
+width: 90%;
+padding: 10px 0 10px 10px;
+float: right;
+margin-top: 80px;	
+}
+#grand-opening h2 a {
+border: none;	
+color: #F6870E;
+}
+.section-azcati-grand-opening h2#rsvp {
+background-color: #437C00;
+padding: 10px 0 10px 10px;
+margin-bottom: 20px;	
+}
+.section-azcati-grand-opening h2#rsvp a {
+color: #FFF;
+border: none;	
+}
+#block-views-algae-feeds-block-1 .views-row,
+.view-algae-feeds .views-row {
+margin-bottom: 12px;	
+}
+.view-algae-feeds .title,
+.view-algae-feeds .date,
+.view-algae-feeds .summary {
+padding-left: 42px;	
+}
+.view-algae-feeds .view-header {
+margin-bottom: 26px; 	
+}
+#page .view-algae-feeds .view-header a {
+border-bottom: none;	
+}
+.algae-industry-feed-item .title,
+.algae-news-feed-item .title,
+.biofuels-news-feed-item .title {
+background: url(../images/news.png) 0 4px no-repeat transparent;	
+}
+.algal-biomass-feed-item .title,
+.lightworks-feed-item .title {
+background: url(../images/blog.png) 0 4px no-repeat transparent;	
+}
+.advanced-biofuel-usa-feed-item .title {
+background: url(../images/event.png) 0 4px no-repeat transparent;	
+}
+#block-views-algae-feeds-block-1 .views-field-title a,
+.view-algae-feeds .title a {
+background: url(../images/ext-link.png) right center no-repeat transparent;	
+padding-right: 15px;
+}
+.view-algae-feeds .date {
+color: #666;
+font-size: 11px;
+font-style: italic;	
+}
+
+h1 { color:#990033; font-size:22px; text-transform:uppercase;}
+h2 { color:black; font-size:18px; margin-bottom:12px;}
+h3 { color:#F6870E; font-size:12px; text-transform:uppercase;}
+
+.front #main-menu .active a { font-weight:bold;}
+#node-5 img { margin-bottom:10px;}

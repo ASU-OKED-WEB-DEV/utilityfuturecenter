@@ -1,0 +1,5 @@
+CHANGELOG for ASU Brand module for Drupal 7
+
+ASU Brand 7.x-1.0-beta1
+=================
+Initial beta release of the ASU Brand module.

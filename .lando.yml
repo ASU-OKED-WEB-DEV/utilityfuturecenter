@@ -1,0 +1,4 @@
+name: utility-future-center
+recipe: drupal7
+config:
+  webroot: .

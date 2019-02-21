@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+function asu_brand_uninstall() {
+  variable_del('asu_brand_header_basepath');
+  variable_del('asu_brand_header_template');
+  variable_del('asu_brand_footer_color');
+  variable_del('asu_brand_header_basepath');
+  cache_clear_all('asu_brand:head', 'cache');
+  cache_clear_all('asu_brand:header', 'cache');
+  cache_clear_all('asu_brand:footer', 'cache');
+}

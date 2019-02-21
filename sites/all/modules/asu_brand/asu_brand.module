@@ -1,0 +1,216 @@
+<?php
+
+/**
+ * ASU Brand module.
+ *
+ * Author: Marcus Anthony (marcus.anthony@asu.edu
+ * Created: 2011-09-21
+ */
+
+define('ASU_BRAND_HEADER_VERSION', '4.0');
+define('ASU_BRAND_HEADER_BASEPATH_DEFAULT', 'https://asu.edu/asuthemes');
+define('ASU_BRAND_HEADER_TEMPLATE_DEFAULT', 'lightworks');
+define('ASU_BRAND_FOOTER_COLOR_DEFAULT', '');
+define('ASU_BRAND_CACHE_LIFETIME', 172800);
+
+/**
+ * Implements hook_block_info().
+ */
+function asu_brand_block_info() {
+  // Never cache the header with Drupal's caching system because the contents of
+  // the block changes based on if the user is logged in. The included header files
+  // are cache manually when then block is viewed in _asu_brand_block_header().
+  $blocks['asu_brand_header'] = array(
+    'info' => t('ASU Brand header'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['asu_brand_footer'] = array(
+    'info' => t('ASU Brand footer'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function asu_brand_block_configure($delta = '') {
+  $form = array();
+  switch ($delta) {
+    case 'asu_brand_header':
+      $form['asu_brand'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('ASU Brand settings'),
+        '#description' => t('This block is cached for %lifetime. To update now, <a href="@link">clear the cache</a>.', array('%lifetime' => format_interval(ASU_BRAND_CACHE_LIFETIME), '@link' => url('admin/config/development/performance'))),
+      );
+      $form['asu_brand']['asu_brand_header_basepath'] = array(
+        '#type' => 'textfield',
+        '#title' => t('ASU theme basepath'),
+        '#description' => t('Enter the path to the asuthemes folder.'),
+        '#default_value' => variable_get('asu_brand_header_basepath', ASU_BRAND_HEADER_BASEPATH_DEFAULT),
+        '#description' => t('The default is %default.', array('%default' => ASU_BRAND_HEADER_BASEPATH_DEFAULT)),
+        '#required' => TRUE,
+      );
+      
+      $form['asu_brand']['asu_brand_header_template'] = array(
+        '#type' => 'textfield',
+        '#title' => t('ASU header template key'),
+        '#description' => t('Enter the key for your custom header.'),
+        '#default_value' => variable_get('asu_brand_header_template', ASU_BRAND_HEADER_TEMPLATE_DEFAULT),
+        '#description' => t('The default is %default.', array('%default' => ASU_BRAND_HEADER_TEMPLATE_DEFAULT)),
+        '#required' => TRUE,
+      );
+      break;
+    
+    case 'asu_brand_footer':
+      $form['asu_brand'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('ASU Brand Settings'),
+        '#description' => t('This block is cached for %lifetime. To update now, <a href="@link">clear the cache</a>.', array('%lifetime' => format_interval(ASU_BRAND_CACHE_LIFETIME), '@link' => url('admin/config/development/performance'))),
+      );
+      $form['asu_brand']['asu_brand_footer_color'] = array(
+        '#type' => 'select',
+        '#title' => t('ASU footer color'),
+        '#description' => t('Select the color of the footer.'),
+        '#options' => array('' => 'Black', '_light_grey' => 'Light Grey', '_dark_grey' => 'Dark Grey'),
+        '#default_value' => variable_get('asu_brand_footer_color', ASU_BRAND_FOOTER_COLOR_DEFAULT),
+        '#required' => FALSE,
+      );
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+
+function asu_brand_block_save($delta = '', $edit = array()) {
+  switch ($delta) {
+    case 'asu_brand_header':
+      variable_set('asu_brand_header_basepath', $edit['asu_brand_header_basepath']);
+      variable_set('asu_brand_header_template', $edit['asu_brand_header_template']);
+      cache_clear_all('asu_brand:head', 'cache');
+      cache_clear_all('asu_brand:header', 'cache');
+      break;
+    
+    case 'asu_brand_footer':
+      variable_set('asu_brand_footer_color', $edit['asu_brand_footer_color']);
+      cache_clear_all('asu_brand:head', 'cache');
+      cache_clear_all('asu_brand:footer', 'cache');
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function asu_brand_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'asu_brand_header':
+      $block['subject'] = NULL;
+      $block['content'] = _asu_brand_block_header();
+      break;
+
+    case 'asu_brand_footer':
+      $block['subject'] = NULL;
+      $block['content'] = _asu_brand_block_footer();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Build the content of the header block.
+ */
+function _asu_brand_block_header() {
+  global $user;
+  
+  // Display an error if the cas and asu_webauth module are enabled at the same time.
+  if(module_exists('cas') && module_exists('asu_webauth')) {
+    drupal_set_message(t('Please <a href="@path">disable the asu_webauth</a> module for the CAS module to function properly.', array('@path' => base_path() . 'admin/build/modules')), 'error');
+  }
+  
+  // Set the header settings for the injected javascript into <head>.
+  $asu_sso_signedin = ($user->uid ? 'true' : 'false');
+  $asu_sso_signinurl = '/user/login?destination=' . urlencode(drupal_get_path_alias($_GET['q']));
+  $asu_sso_signouturl = '/logout';
+  
+  // Alter the signin/signout URL if cas in enabled.
+  if(module_exists('cas')) {
+    $proto = 'https://';
+    $host = $_SERVER['SERVER_NAME'];
+    $port = ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']);
+    $asu_sso_signinurl = $proto . $host . $port . '/cas?destination=' . urlencode(drupal_get_path_alias($_GET['q']));
+    $asu_sso_signouturl = '/caslogout';
+  }
+  
+  // Inject header javascript into <head> and set the weight to a high negative value.
+  $inline_script = <<<EOL
+   <script type="text/javascript">
+    <!--//--><![CDATA[//><!--
+    var ASUHeader = ASUHeader || {};
+    ASUHeader.user_signedin = $asu_sso_signedin;
+    ASUHeader.signin_url = "$asu_sso_signinurl";
+    ASUHeader.signout_url = "$asu_sso_signouturl";
+    //--><!]]>
+  </script>
+EOL;
+  drupal_add_html_head(array('#type' => 'markup', '#markup' => $inline_script, '#weight' => -100), 'asu_brand_head_js');
+  
+  // Build the head and header file paths.
+  $header_version = ASU_BRAND_HEADER_VERSION;
+  $header_basebath = variable_get('asu_brand_header_basepath', ASU_BRAND_HEADER_BASEPATH_DEFAULT);
+  $header_template = variable_get('asu_brand_header_template', ASU_BRAND_HEADER_TEMPLATE_DEFAULT);
+  
+  $cache = array('asu_brand:head', 'asu_brand:header');
+  $cache = cache_get_multiple($cache);
+  
+  // Get the cached version of head, if available.
+  if (isset($cache['asu_brand:head'])) {
+    $head_file = $cache['asu_brand:head']->data;
+  }
+  else {
+    $head_path = $header_basebath . '/' . $header_version . '/heads/' . $header_template . '.shtml';
+    $head_file = file_get_contents($head_path);
+    cache_set('asu_brand:head', $head_file, 'cache', time() + ASU_BRAND_CACHE_LIFETIME);
+  }
+  
+  // Get the cached version of header, if available.
+  if (isset($cache['asu_brand:header'])) {
+    $header_file = $cache['asu_brand:header']->data;
+  }
+  else {
+    $header_path = $header_basebath . '/' . $header_version . '/headers/' . $header_template . '.shtml';
+    $header_file = file_get_contents($header_path);
+    cache_set('asu_brand:header', $header_file, 'cache', time() + ASU_BRAND_CACHE_LIFETIME);
+  }
+  
+  // Inject the head file into <head>. The weight of this item must occur after
+  // the injection of the header javascript.
+  drupal_add_html_head(array('#type' => 'markup', '#markup' => $head_file, '#weight' => -99), 'asu_brand_head');
+  
+  // Return the content from the ASU header.
+  return $header_file;
+}
+
+/**
+ * Build the content of the footer block.
+ */
+function _asu_brand_block_footer() {
+  // Get the cached version of footer, if available.
+  if ($cache = cache_get('asu_brand:footer')) {
+    return $cache->data;
+  }
+  else {
+    $header_version = ASU_BRAND_HEADER_VERSION;
+    $header_basebath = variable_get('asu_brand_header_basepath', ASU_BRAND_HEADER_BASEPATH_DEFAULT);
+    $footer_color = variable_get('asu_brand_footer_color', ASU_BRAND_FOOTER_COLOR_DEFAULT);
+    $footer_path = $header_basebath . '/' . $header_version . '/includes/footer' . $footer_color . '.shtml';
+    $footer_file = file_get_contents ($footer_path);
+    cache_set('asu_brand:footer', $footer_file, 'cache', time() + ASU_BRAND_CACHE_LIFETIME);
+    return $footer_file;
+  }
+}
